@@ -1,7 +1,8 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useCallback } from "react";
 import styled, { css } from "styled-components";
 import { useSpendingDispatch } from "./Provider";
 import { MdDelete, MdCheck, MdEdit, MdClose } from "react-icons/md";
+import { CategorySelect } from "./Category";
 
 const ItemBlock = styled.div`
   width: 100%;
@@ -44,7 +45,6 @@ const ItemCategory = styled.div`
       background: #a5d8ff;
     `}
 `;
-const ItemCategoryInput = styled.select``;
 const ItemText = styled.div`
   flex: 1;
   padding-left: 10px;
@@ -118,14 +118,14 @@ const Item = ({ id, text, price, category }) => {
   });
   const { isEditing, selectCategory, inputText, inputPrice } = state;
 
-  const onChange = (e) => {
+  const onChange = useCallback((e) => {
     const { name, value } = e.target;
     dispatch({
       type: "ON_CHANGE",
       name,
       value,
     });
-  };
+  }, []);
   const onEditing = () => {
     dispatch({
       type: "IS_EDITING",
@@ -157,22 +157,15 @@ const Item = ({ id, text, price, category }) => {
       type: "IS_EDITING",
     });
   };
-
   return (
     <ItemBlock>
       {isEditing ? (
         <>
-          <ItemCategoryInput
+          <CategorySelect
             name="selectCategory"
             onChange={onChange}
-            defaultValue={category}
-          >
-            <option value="식사">식사</option>
-            <option value="식료품">식료품</option>
-            <option value="교통">교통</option>
-            <option value="생활">생활</option>
-            <option value="의료">의료</option>
-          </ItemCategoryInput>
+            value={category}
+          ></CategorySelect>
           <ItemTextInput
             onChange={onChange}
             name="inputText"

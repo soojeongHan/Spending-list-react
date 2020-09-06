@@ -3,12 +3,13 @@ import styled, { css } from "styled-components";
 import { MdAdd } from "react-icons/md";
 import { useReducer } from "react";
 import { useSpendingNextId, useSpendingDispatch } from "./Provider";
+import { CategorySelect } from "./Category";
 
 const CreatePositioner = styled.div`
   margin: 0;
   width: 100%;
   height: 130px;
-  background: #ffffff;
+  background: #dee2e6;
   border-top: 1px solid #dee2e6;
   bottom: 0;
   left: 0;
@@ -22,11 +23,10 @@ const CreateForm = styled.form`
 const CategoryBlock = styled.div`
   font-size: 14px;
   margin-bottom: 5px;
+  padding: 0;
   display: flex;
   justify-content: center;
-`;
-const CategoryInput = styled.select`
-  margin-left: 8px;
+  align-items: center;
 `;
 const TextBlock = styled.div`
   font-size: 14px;
@@ -127,7 +127,7 @@ const Create = () => {
     if (name === "price" && reg.test(e.target.value)) {
       dispatch({ type: "ON_CHANGE", name, value: Number(value) });
     } else if (name === "price" && !reg.test(e.target.value)) {
-      alert("숫자를 입력하지 마세요.");
+      alert("숫자만 입력해주세요.");
     } else if (name !== "price") {
       dispatch({ type: "ON_CHANGE", name, value });
     }
@@ -158,18 +158,12 @@ const Create = () => {
         <CreatePositioner>
           <CreateForm onSubmit={onCreate}>
             <CategoryBlock>
-              카테고리 :
-              <CategoryInput
+              <span>카테고리 : </span>
+              <CategorySelect
                 name="category"
-                defaultValue={category}
+                value={category}
                 onChange={onChange}
-              >
-                <option value="식사">식사</option>
-                <option value="식료품">식료품</option>
-                <option value="교통">교통</option>
-                <option value="생활">생활</option>
-                <option value="의료">의료</option>
-              </CategoryInput>
+              />
             </CategoryBlock>
             <TextBlock>
               제목 :
